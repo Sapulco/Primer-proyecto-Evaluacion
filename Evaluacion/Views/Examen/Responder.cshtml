@@ -1,0 +1,116 @@
+﻿@model Evaluacion.Models.Examen
+@using Evaluacion.Models
+
+@{
+    ViewBag.Title = "Responder";
+}
+@using (Html.BeginForm("Responder", "Examen", FormMethod.Post, new { @id = "frmExamen" }))
+{
+    <div class="container">
+        @Html.Hidden("pExamenID", Model.ID)
+        <br />
+        <br />
+        <h2>Examen: @Model.NombreExamen</h2>
+        <br />
+        <br />
+        @foreach (Pregunta pregunta in Model.Preguntas.OrderBy(p => p.Orden))
+        {
+
+            <div>
+                @pregunta.Orden @pregunta.Nombre
+            </div>
+            <br />
+            <div>
+
+
+                
+
+                @switch (pregunta.TipoPregunta.Nombre)
+                {
+                    case "Abierta":
+                        @Html.TextBox("txtPregunta_" + pregunta.ID, string.Empty, new { @class = "form-control col-md-4" });
+                        break;
+                    case "Selección":
+                        <select id="txtPregunta_@pregunta.ID" name="txtPregunta_@pregunta.ID" class="form-control col-md-4">
+                            <option value="">Elige una opción</option>
+                            @foreach (Opcion opcion in pregunta.Opciones)
+                            {
+                                <option value="@opcion.Valor">@opcion.Valor</option>
+                            }
+                        </select>
+                        break;
+                    case "Opción Múltiple":
+                        <table>
+
+                            @foreach (Opcion opcion in pregunta.Opciones)
+                            {
+                                <tr>
+                                    <td>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="txtPregunta_@opcion.ID" name="txtPregunta_@pregunta.ID" value="@opcion.Valor" />
+                                            <label class="custom-control-label" for="txtPregunta_@opcion.ID">@opcion.Valor</label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            }
+                        </table>
+
+                        break;
+                    case "Fecha":
+                        <input type="date" id="txtPregunta_@pregunta.ID" name="txtPregunta_@pregunta.ID" class="form-control col-md-4" />
+                        break;
+                    case "Número":
+                        <input type="number" id="txtPregunta_@pregunta.ID" name="txtPregunta_@pregunta.ID" class="form-control col-md-4" />
+                        break;
+                    default:
+                        @Html.TextBox("txtPregunta_" + pregunta.ID, string.Empty, new { @class = "form-control col-md-4" });
+                        break;
+                }
+
+            </div>
+            <br />
+        }
+
+        <br />
+        <br />
+        @*<input class="btn-primary" type="button" value="Finalizar" onclick="CargarResultado();" />*@
+        <input type="submit" class="btn-primary" value="Finalizar" />
+        <br />
+        <br />
+        @Html.ActionLink("Regresar al Listado", "Examenes", "Examen");
+    </div>
+}
+
+
+<br />
+<br />
+
+<script type="text/javascript">
+
+    function CargarResultado() {
+
+        //alert("Hola");
+
+        @*var url = "@Url.Action("Responder","Examen")"
+        var parametros = { pExamenID: $("#ExamenID").val() };
+
+        $.post(url, parametros).done(function (result) {
+            window.location.href = "Examenes", "Examen";
+        });*@
+
+        var url = "@Url.Action("Accion","controlador")";
+        url = url + "?nombreDelParametro=" + $("#txtX").val();
+        url = url + "&parametro2=" + @Model.UsuarioAltaID;
+
+        window.location.href = url;
+
+
+
+        //$("#frmExamen").submit();
+
+    }
+
+
+</script>

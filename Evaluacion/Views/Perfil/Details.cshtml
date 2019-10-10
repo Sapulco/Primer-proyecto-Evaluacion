@@ -1,0 +1,51 @@
+﻿@model List<Evaluacion.Models.PerfilModulo>
+@using Evaluacion.Models
+@using Evaluacion.DAL
+
+@{
+    Perfil perfil = ViewBag.PerfilID;
+    Evaluacion_DbContext db = new Evaluacion_DbContext();
+}
+<br />
+<br />
+<h2>Perfil: @perfil.Nombre</h2>
+<br />
+<br />
+@foreach (Modulo modulo in (List<Modulo>)ViewBag.Modulos)
+{
+    var IsChecked = false;
+    if (Model.Where(pm => pm.ModuloID == modulo.ID).Count() > 0)
+    {
+        IsChecked = true;
+    }
+<p>@Html.CheckBox("chk_" + modulo.ID, IsChecked, new { @onchange = "ActualizarAcceso(" + modulo.ID + ", " + perfil.ID + ");" }) @modulo.Nombre</p>
+    
+}
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Regresar a Listado", "Index")
+</p>
+
+<br />
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function ActualizarAcceso(ModuloID, PerfilID) {
+
+            var IsChecked = false;
+            var url = "@Url.Action("ActualizarAcceso","Perfil")"
+            if ($("#chk_" + ModuloID).prop('checked')) {
+
+                IsChecked = true;
+            }
+            var parametros = { pModuloID: ModuloID, pPerfilID: PerfilID, pIsChecked: IsChecked };
+
+            $.post(url, parametros).done(function (result) {
+
+            });
+        }
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@using Evaluacion.DAL
+@using Evaluacion.Models
+@{ 
+    Pregunta pregunta = ViewBag.Pregunta;
+}
+
+
+<p><table style="border-style:hidden;">
+    @foreach (Opcion opcion in (List<Opcion>)ViewBag.Opciones)
+    {
+
+
+        <tr>
+
+            <td width="200px">@opcion.Valor</td>
+            <td width="200px">
+                @Html.ActionLink("Editar", "Edit", new { id = opcion.ID, pExamenID = pregunta.ExamenID }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = opcion.ID })
+            </td>
+        </tr>
+
+
+
+    }
+</table>
+</p>
+
+<p>
+    @Html.TextBox("txtOpcion", string.Empty, new { @class = "form-control col-md-8" })
+    @*@Html.ValidationMessage("txtOpcion", new { @id = "valOpcion", @class = "text-danger" })*@
+    <span class="text-danger" id="valOpcion"></span>
+</p>
+
+<p>
+    <input type="button" value="Agregar Opción" class="btn btn-primary" onclick="vpGuardarOpcion();" />
+</p>
+<input type="hidden" id="PreguntaID" name="PreguntaID" value="@pregunta.ID" />
+
+
+<script type="text/javascript">
+
+        function vpGuardarOpcion()
+        {
+            var url = "@Url.Action("CrearOpcion", "Opcion")"
+            var parametros = { txtOpcion: $("#txtOpcion").val(), pPreguntaID: $("#PreguntaID").val() };
+
+            $.post(url, parametros).done(function (result) {
+                
+
+                if (result == "1") {
+                    //fallo
+                    $("#valOpcion").html("Es necesario llenar este campo");
+                }
+                else {
+                    //ok
+                    CrearOpcion(@pregunta.ID);
+                }
+
+            }).fail(function (result) {
+                $("#valOpcion").html("Es necesario llenar este campo");
+            });
+        }
+
+
+</script>
+
+
+
+    

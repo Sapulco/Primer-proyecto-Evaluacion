@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Evaluacion.Models.Pregunta>
+@using Evaluacion.DAL
+@using Evaluacion.Models
+
+@{
+    ViewBag.Title = "Index";
+    Examen examen = ViewBag.ExamenID;
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-md-10"><h2>Examen: @examen.NombreExamen</h2></div>
+    <div class="col-md-2">@Html.ActionLink("Crear pregunta", "Create", new { pExamenID = examen.ID })</div>
+</div>
+
+
+
+<br />
+<br />
+
+<table class="table table-hover">
+    <tr class="table-active">
+        <th width="400px">
+            Pregunta
+        </th>
+        <th width="150px">
+            Tipo de pregunta
+        </th>
+        <th width="150px">
+            @Html.DisplayNameFor(model => model.Orden)
+        </th>
+        <th width="200px"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        
+        <tr>
+            <td colspan="4">
+                <table width="100%" >
+                    <tr>
+                        <td width="400px">
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td width="150px">
+                            @Html.DisplayFor(modelItem => item.TipoPregunta.Nombre)
+                        </td>
+                        <td width="150px">
+                            @Html.DisplayFor(modelItem => item.Orden)
+                        </td>
+                        <td width="200px">
+                            @Html.ActionLink("Editar", "Edit", new { id = item.ID })
+                            @if (item.TipoPregunta.IsListado || item.TipoPregunta.IsMultiple)
+                            {
+                                <span>|</span>
+                                <a style="cursor:pointer; color:black;" onclick="CrearOpcion(@item.ID);">Opciones</a>
+                            }
+
+                            |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div id="dvOpciones_@item.ID"></div>
+                <input type="hidden" id="hdPreguntaID" name="hdPreguntaID" value="@item.ID" />
+
+
+            </td>
+
+
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Regresar al Listado","Index","Examen", new { pExamenID = examen.ID }, null);
+</p>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        
+        function CrearOpcion(PreguntaID)
+        {
+
+            if ($("#dvOpciones_" + PreguntaID).text().length > 0) {
+                $("#dvOpciones_" + PreguntaID).empty();
+            }
+            else {
+
+            
+
+                var url = "@Url.Action("AltaOpcion","Opcion")"
+                var parametros = { pPreguntaID: PreguntaID };
+
+                $.get(url, parametros).done(function (result) {
+                    $("#dvOpciones_" + PreguntaID).empty();
+                    $("#dvOpciones_" + PreguntaID).append(result);
+
+                });
+            }
+        }
+
+    </script>
+}

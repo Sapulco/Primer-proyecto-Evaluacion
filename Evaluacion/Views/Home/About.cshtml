@@ -1,0 +1,16 @@
+﻿@model Evaluacion.Models.Modulo
+
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>Use this area to provide additional information.</p>
+<p>
+    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+</p>
+<p>
+    @Html.EditorFor(model => model.IsActivo)
+</p>
+
+<p>
+    @Html.ValidationMessage("ErrorNombre", new { @class = "text-danger" })
+</p>

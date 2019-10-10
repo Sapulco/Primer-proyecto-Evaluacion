@@ -1,0 +1,58 @@
+﻿@model List<Evaluacion.Models.PerfilDepartamento>
+@using Evaluacion.Models
+@{
+    ViewBag.Title = "DepartamentosPerfil";
+    Perfil perfil = ViewBag.PerfilID;
+}
+<br />
+<br />
+<h2>Perfil : @perfil.Nombre</h2>
+<br />
+<br />
+@foreach (Departamento departamento in (List<Departamento>)ViewBag.DepartamentosID)
+{
+    var IsChecked = false;
+    if (Model.Where(pd => pd.DepartamentoID == departamento.ID).Count() > 0)
+    {
+        IsChecked = true;
+    }
+    <div>
+        @Html.CheckBox("chk_" + departamento.ID, IsChecked, new { @onchange = "AccesoDpto(" + perfil.ID + ", " + departamento.ID + ");" }) @departamento.Nombre
+    </div>
+
+}
+<br />
+<br />
+<div>
+    @Html.ActionLink("Regresar a Listado", "Index","Perfil")
+</div>
+<br />
+<br />
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        
+        function AccesoDpto(PerfilID, DepartamentoID) {
+
+            var IsChecked = false;
+            if ($("#chk_" + DepartamentoID).prop('checked')) {
+                IsChecked = true;
+            }
+
+            var url = "@Url.Action("ActualizarAcceso","Departamento")"
+            var parametros = { pPerfilID: PerfilID, pDepartamentoID: DepartamentoID, pIsChecked: IsChecked };
+
+            $.post(url, parametros).done(function (result) {
+
+            });
+        }
+
+
+
+    </script>
+
+
+}

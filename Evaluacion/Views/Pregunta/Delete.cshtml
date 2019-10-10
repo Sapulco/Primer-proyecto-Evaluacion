@@ -1,0 +1,61 @@
+﻿@model Evaluacion.Models.Pregunta
+
+@{
+    ViewBag.Title = "Delete";
+}
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Eliminar Pregunta</h3>
+        <hr />
+    </div>
+</div>
+
+<div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Examen.NombreExamen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Examen.NombreExamen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoPregunta.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoPregunta.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Orden)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Orden)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-primary" /> |
+            @Html.ActionLink("Regresar al Listado", "Index", new { pExamenID = Model.ExamenID})
+        </div>
+    }
+</div>

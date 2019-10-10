@@ -1,0 +1,34 @@
+﻿@model List<Evaluacion.Models.Departamento>
+@using Evaluacion.Models
+
+<br />
+<br />
+<h2>Examenes por Departamento</h2>
+<br />
+
+@if (Model == null)
+{
+    <p>@ViewBag.Error</p>
+}
+else
+{
+    foreach (Departamento departamento in Model)
+    {
+        <p>
+            <h4>@departamento.Nombre</h4>
+        </p>
+
+
+        foreach (Examen examen in departamento.Examenes)
+        {
+
+            if (examen.IsLiberado)
+            {
+                <p>
+                    - @examen.NombreExamen
+                </p>
+            }
+        }
+    }
+}
+

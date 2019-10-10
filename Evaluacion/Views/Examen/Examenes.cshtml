@@ -1,0 +1,63 @@
+﻿@model List<Evaluacion.Models.Examen>
+@using Evaluacion.Models
+<br />
+<br />
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Examenes</h2>
+        </div>
+        <div class="col-md-2" style="text-align:right; margin-top:10px;">
+            <b>Filtro de Búqueda:</b>
+        </div>
+        <div class="col-md-5">
+            @Html.TextBox("txtBuscar", (string)ViewBag.PalabraBuscar, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <input type="button" value="Buscar" onclick="Buscar();" class="btn btn-primary" />
+        </div>
+    </div>
+    <br />
+    <br />
+
+
+    <table class="table table-hover" width="100%;">
+        <thead>
+            <tr class="table-primary">
+                <td width="23%;">Nombre Examen</td>
+                <td width="23%;">Departamento</td>
+                <td width="23%;">Fecha de Alta</td>
+                <td width="23%;"></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Examen examen in Model)
+            {
+                <tr>
+                    <td width="23%;">@examen.NombreExamen</td>
+                    <td width="23%;">@examen.Departamento.Nombre</td>
+                    <td width="23%;">@examen.FechaAlta.ToShortDateString()</td>
+                    <td width="23%;">@Html.ActionLink("Responder", "Responder", "Examen", new { pExamenID = examen.ID }, null)</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    function Buscar()
+    {
+        var link = "@Url.Action("Examenes","Examen")"
+        link = link + "?strPalabraBuscar=" + $("#txtBuscar").val();
+
+        window.location.href = link;
+
+    }
+</script>

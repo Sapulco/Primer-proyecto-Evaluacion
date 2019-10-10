@@ -1,0 +1,96 @@
+﻿@model Evaluacion.Models.RegisterViewModel
+@using Evaluacion.Models
+@using Evaluacion.DAL
+@{
+    ViewBag.Title = "Registrarse";
+    Evaluacion_DbContext db = new Evaluacion_DbContext();
+}
+<br />
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<br />
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.CuentaUsuario, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.CuentaUsuario, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Contrasena, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nombre, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Paterno, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.Paterno, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Materno, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.Materno, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FechaNacimiento, new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(m => m.FechaNacimiento, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PerfilID, "Perfil", new { @class = "col-md-6 control-label" })
+        <div class="col-md-6">
+            @Html.DropDownList("PerfilID", null, "", new { @class = "form-control" })
+            @*@Html.DropDownListFor(m=>m.PerfilID ,(List<SelectListItem>)ViewBag.PerfilesID, "Elige una Opción", new { @class = "control-label col-md-6" })*@
+            @*<select id="PerfilID" name="PerfilID" onchange="CargarPerfil()">
+                    <option>Selecciona un valor</option>
+                    @foreach (Perfil perfil in (List<Perfil>)ViewBag.PerfilID)
+                    {
+                        <option value="@perfil.ID">
+                            @perfil.Nombre
+                        </option>
+                    }
+                </select>*@
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-6">
+            <input type="submit" class="btn btn-primary" value="Registrarse" />
+        </div>
+    </div>
+}
+<br />
+<br />
+@Html.ActionLink("Inciar Sesión", "Login")
+<br />
+<br />
+<br />
+<br />
+
+
+<link href="~/Scripts/BlackTie/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/BlackTie/jquery-ui.min.js"></script>
+    <script>
+        $("#FechaNacimiento").datepicker({ dateFormat: "dd/mm/yy" });
+    </script>
+
+
+}

@@ -1,0 +1,55 @@
+﻿
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "formtest" }))
+{
+    <p>
+        Escribe tu nombre
+    </p>
+    <p>
+        <input type="text" id="texto" name="texto" />
+        <div id="error"></div>
+    </p>
+    <p>
+        ¿Cuál es tu fruta preferida?
+    </p>
+    <p>
+        <input type="checkbox" id="frutas" name="f1" /> Melon
+        <input type="checkbox" id="frutas" name="f2" /> Papaya
+        <input type="checkbox" id="frutas" name="f3" /> Fresa
+    </p>
+    <hr />
+    <p>
+        ¿En donde le pegaron al tigre toño?
+    </p>
+    <p>
+        <input type="radio" id="parte" name="t1" /> El brazo
+        <input type="radio" id="parte" name="t2" /> La pierna
+        <input type="radio" id="parte" name="t3" /> En su carita
+    </p>
+    <input type="submit" value="Guardar" onclick="Validar();" />
+}
+
+<script type="text/javascript">
+
+    function Validar() {
+
+        $("#error").empty();
+
+
+        var IsValid = true;
+        var srtError = "";
+        if ($("#texto").val().length <= 0) {
+            IsValid = false;
+            srtError = "Debes escribir tu nombre";
+        }
+
+        if (IsValid == false)
+        {
+            $("#error").append(srtError);
+        }
+        else {
+            $("#formtest").submit();
+        }
+    }
+
+
+</script>

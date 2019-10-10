@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Evaluacion.Models.Modulo>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+<br />
+<br />
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-10"><h2>Modulos</h2></div>
+        <div class="col-md-2">@Html.ActionLink("Crear Modulo", "Create")</div>
+    </div>
+
+    <br />
+    <br />
+    <table class="table table-hover">
+        <tr class="table-primary">
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                ¿Activo?
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ControllerName)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActivo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ControllerName)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                    @*@Html.ActionLink("Details", "Details", new { id=item.ID }) |*@
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

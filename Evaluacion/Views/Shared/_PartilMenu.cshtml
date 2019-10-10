@@ -1,0 +1,24 @@
+﻿@using Evaluacion.DAL
+@using Evaluacion.Models
+@using System.Data.Entity;
+@{
+    Evaluacion_DbContext db = new Evaluacion_DbContext();
+    List<Modulo> lstModulo = new List<Modulo>();
+    Usuario usr = db.Usuario.Include(u=>u.Perfil.PerfilModulos.Select(pm=>pm.Modulo)).FirstOrDefault(u => u.CuentaUsuario == User.Identity.Name);
+}
+
+@if (usr.Perfil.IsAdministrador)
+{
+    lstModulo = db.Modulo.Where(m => m.IsActivo == true).ToList();
+}
+else
+{
+    lstModulo = usr.Perfil.PerfilModulos.Select(pm=>pm.Modulo).ToList();
+}
+
+@foreach (Modulo modulo in lstModulo)
+{
+    <div>
+        @Html.ActionLink(modulo.Nombre, modulo.ActionName, modulo.ControllerName, null, new { @class = "nav-link" })
+    </div>
+}

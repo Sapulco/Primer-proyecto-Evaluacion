@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Evaluacion.Models.Departamento>
+
+@using Evaluacion.DAL
+@using Evaluacion.Models
+
+@{
+    Evaluacion_DbContext db = new Evaluacion_DbContext();
+    Usuario usr = db.Usuario.FirstOrDefault(u=>u.CuentaUsuario == User.Identity.Name);
+}
+
+<h2 style="text-align:center;">Examenes por departamento</h2>
+<br />
+<div class="row">
+    @foreach (Departamento departamento in Model)
+    {
+        <div class="col-md-6">
+            <div class="card border-primary mb-3" style="color:black">
+                <div class="card-header">
+                    <table width="100%">
+                        <tr>
+                            <td style="width:50%;">
+                                DEPARTAMENTO: @departamento.Nombre.ToUpper()
+                            </td>
+                            <td style="width:50%; text-align:right;">
+                                @Html.ActionLink("Crear Examen", "Create", "Examen", new { pDepartamentoID = departamento.ID }, new { @class = "btn btn-primary" })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-body" style="min-height:300px; max-height: 300px; overflow-y: scroll;">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3>LISTADO DE EXAMENES</h3>
+                        </div>
+                        <div class="col-md-3">
+                            <input class="btn-link" type="button" style="border:hidden; background-color:white;" id="Inactivos" name="Inactivos" value="Inactivos" onclick="CargarInactivos(@departamento.ID);" /> (@departamento.Examenes.Where(e => e.IsLiberado == false).Count())
+                        </div>
+                    </div>
+                    @if (usr.Perfil.IsAdministrador)
+                    {
+                        <div id="ExamenesInactivos_@departamento.ID"></div>
+                    }
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nombre del Examen
+                                </th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            @foreach (Examen examen in departamento.Examenes.Where(e => e.IsLiberado == true))
+                            {
+                                <tr>
+                                    <td>
+                                        @examen.NombreExamen
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Editar", "Edit", "Examen", new { pExamenID = examen.ID }, null) |
+                                        @if (usr.Perfil.IsAdministrador)
+                                        {
+                                            @Html.ActionLink("Eliminar", "Delete", "Examen", new { pExamenID = examen.ID }, null)
+                                            <span>|</span>
+                                        }
+
+                                        @Html.ActionLink("Preguntas (" + examen.Preguntas.Count().ToString() + ")", "Index", "Pregunta", new { pExamenID = examen.ID }, null)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    function CargarInactivos(DepartamentoID)
+    {
+
+
+        if ($("#ExamenesInactivos_" + DepartamentoID).text().length > 0) {
+
+            $("#ExamenesInactivos_" + DepartamentoID).empty();
+        }
+        else
+        {
+            var url = "@Url.Action("ExamenesInactivos","Examen")";
+            var parametros = { pDepartamentoID: DepartamentoID };
+
+
+            $.get(url, parametros).done(function (result) {
+
+
+
+
+                $("#ExamenesInactivos_" + DepartamentoID).empty();
+                $("#ExamenesInactivos_" + DepartamentoID).append(result);
+
+
+            });
+        }
+
+
+    }
+
+</script>

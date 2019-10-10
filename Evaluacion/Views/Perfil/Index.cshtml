@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Evaluacion.Models.Perfil>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<br />
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-10"><h2>Perfiles</h2></div>
+        <div class="col-md-2">@Html.ActionLink("Crear Perfil", "Create")</div>
+    </div>
+    <br />
+    <br />
+    <table class="table table-hover">
+        <tr class="table-primary">
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                ¿Administrador?
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAdministrador)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                    @if (!item.IsAdministrador)
+                    {
+                        @Html.ActionLink("Acceso a Modulos", "Details", new { pPerfilID = item.ID })
+                        <span>|</span>
+                        @Html.ActionLink("Departamentos", "DepartamentosPerfil", "Departamento", new { pPerfilID = item.ID }, null)
+                        <span>|</span>
+                    }
+
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+

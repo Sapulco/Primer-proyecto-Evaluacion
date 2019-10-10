@@ -1,0 +1,10 @@
+﻿
+<h2>Cargar Archivo</h2>
+
+@using (Html.BeginForm("CargarArchivo", "Pregunta_Demo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <p>
+        <input type="file"name="CargarArchivo" id="CargarArchivo" />
+    </p>
+    <input type="submit" value="Cargar" />
+}

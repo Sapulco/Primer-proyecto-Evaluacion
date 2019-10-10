@@ -1,0 +1,16 @@
+﻿@model List<Evaluacion.Models.Examen>
+@using Evaluacion.Models
+
+<table class="table" width="100%;">
+   
+    @foreach (Examen examen in Model)
+    {
+        <tr>
+            <td width="50%;">@examen.NombreExamen</td>
+            <td width="50%;">
+                @Html.ActionLink("Editar","Edit","Examen", new { pExamenID = examen.ID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
